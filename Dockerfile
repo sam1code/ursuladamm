@@ -1,12 +1,12 @@
-# 1. Define the base image once at the top
-FROM node:22.17.0-alpine AS base
+# 1. Dependencies stage
+FROM node:22.17.0-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# 2. Dependencies stage
-FROM base AS deps
-# Copy lockfiles if they exist
 COPY package.json package-lock.json* ./ 
+
+# Fix: Force npm to install the correct native binaries for Alpine/musl
+RUN npm install --include=optional --os=linux --libc=musl --cpu=x64
 RUN \
   if [ -f package-lock.json ]; then npm ci; \
   else npm install; \
