@@ -1,0 +1,67 @@
+.article {
+  padding: 80px 0;
+  background: #fff;
+}
+.contentWrapper {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Media styling to fix the "too big" issue */
+.mediaContainer {
+  width: 100%;
+  margin: 2.5rem 0;
+  display: flex;
+  justify-content: center;
+}
+.contentImage {
+  max-width: 100%;
+  max-height: 600px;
+  height: auto;
+  object-fit: contain;
+}
+.videoPlayer {
+  width: 100%;
+  max-height: 500px;
+  background: #000;
+  border-radius: 4px;
+}
+
+/* Text styling */
+.paragraph {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+.h2 {
+  font-size: 2rem;
+  margin: 2rem 0 1rem;
+  font-weight: 700;
+}
+.list {
+  padding-left: 20px;
+  margin-bottom: 1.5rem;
+}
+.listItem {
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+/* Header/Meta styling */
+.header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+.title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-top: 10px;
+}
+.meta {
+  color: #888;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}

@@ -1,0 +1,80 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px 50px;
+  position: sticky;
+  top: 0;
+  background: #fcfcfc;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 900;
+  cursor: pointer;
+  letter-spacing: -1px;
+}
+
+.desktopMenu {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.desktopMenu button {
+  background: none;
+  border: none;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.langSwitch {
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  gap: 8px;
+  color: #ccc;
+  padding-left: 20px;
+  border-left: 1px solid #eee;
+}
+
+.activeLang {
+  color: #222;
+}
+
+.mobileToggle {
+  display: none;
+  background: none;
+  border: none;
+  z-index: 1100;
+}
+
+.mobileMenuOverlay {
+  position: fixed;
+  inset: 0;
+  background: white;
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  transform: translateY(-100%);
+  transition: transform 0.4s ease;
+}
+
+.menuVisible {
+  transform: translateY(0);
+}
+
+@media (max-width: 900px) {
+  .desktopMenu {
+    display: none;
+  }
+  .mobileToggle {
+    display: block;
+  }
+}

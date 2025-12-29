@@ -94,10 +94,10 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: null;
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'de') | ('en' | 'de')[];
   globals: {};
   globalsSelect: {};
-  locale: null;
+  locale: 'en' | 'de';
   user: User & {
     collection: 'users';
   };
@@ -173,8 +173,7 @@ export interface Media {
  */
 export interface Category {
   id: number;
-  name_en: string;
-  name_de: string;
+  name: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -188,12 +187,12 @@ export interface Post {
   slug?: string | null;
   language: 'en' | 'de';
   /**
-   * Link the other language version here
+   * Link the German version if this is English (and vice versa)
    */
   alternateVersion?: (number | null) | Post;
   publishedDate: string;
   /**
-   * e.g., 2023-2025
+   * e.g., 2023-2025 or 2012
    */
   displayYear?: string | null;
   categories?: (number | Category)[] | null;
@@ -240,7 +239,7 @@ export interface News {
     };
     [k: string]: unknown;
   };
-  language: 'en' | 'de';
+  alternateVersion?: (number | null) | News;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -273,7 +272,6 @@ export interface Info {
         id?: string | null;
       }[]
     | null;
-  language: 'en' | 'de';
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -413,8 +411,7 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "categories_select".
  */
 export interface CategoriesSelect<T extends boolean = true> {
-  name_en?: T;
-  name_de?: T;
+  name?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -444,7 +441,7 @@ export interface NewsSelect<T extends boolean = true> {
   headline?: T;
   date?: T;
   description?: T;
-  language?: T;
+  alternateVersion?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -462,7 +459,6 @@ export interface InfoSelect<T extends boolean = true> {
         details?: T;
         id?: T;
       };
-  language?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
