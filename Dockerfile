@@ -1,14 +1,4 @@
-FROM node:22.17.0-alpine AS base
-
-# 1. Dependencies
-FROM base AS deps
-RUN apk add --no-cache libc6-compat
-WORKDIR /app
-COPY package.json package-lock.json* ./ 
-RUN \
-  if [ -f package-lock.json ]; then npm ci; \
-  else npm install; \
-  fi
+# ... (Previous stages: base, deps)
 
 # 2. Builder
 FROM base AS builder
@@ -16,6 +6,12 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
+
+# --- FIX START ---
+# Ensure the public directory exists so the COPY command doesn't crash
+RUN mkdir -p public
+# --- FIX END ---
+
 RUN npm run build
 
 # 3. Runner
@@ -30,10 +26,11 @@ RUN adduser --system --uid 1001 nextjs
 # Create storage for SQLite and Media
 RUN mkdir -p database public/media && chown -R nextjs:nodejs database public/media
 
+# Copy standalone build files
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Safely copy public folder if it exists
+# This will now work because we ensured /app/public exists in the builder stage
 COPY --from=builder /app/public ./public
 
 USER nextjs
