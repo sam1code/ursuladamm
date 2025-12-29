@@ -1,0 +1,26 @@
+/* Normal styles are already in your modules */
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Ensure all elements respect the border-box model */
+* {
+  box-sizing: border-box;
+}
+
+:global(.high-contrast) main,
+:global(.high-contrast) footer,
+:global(.high-contrast) nav {
+  background-color: #f0f3f1 !important;
+  border-color: #fff !important;
+}
+
+:global(.high-contrast) a,
+:global(.high-contrast) button {
+  color: #ffff00 !important; /* Bright yellow for links in contrast mode */
+  text-decoration: underline !important;
+}

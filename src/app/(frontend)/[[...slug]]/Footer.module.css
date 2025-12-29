@@ -1,0 +1,20 @@
+/* Footer.module.css */
+.footer {
+  background-color: #fcfcfc;
+  padding: 20px 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  margin: 0 auto;
+}
+
+/* DESKTOP: Switch to 3 columns */
+@media (min-width: 768px) {
+  .container {
+    grid-template-columns: 2fr 1fr 1fr;
+    padding: 0 50px;
+  }
+}

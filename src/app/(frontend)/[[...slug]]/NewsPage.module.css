@@ -1,0 +1,77 @@
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 100px 20px;
+}
+
+.pageTitle {
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #000;
+  padding-bottom: 5px;
+}
+
+.newsItem {
+  padding: 15px 0; /* Very compact */
+  border-bottom: 1px solid #eee;
+}
+
+.date {
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: #777;
+  padding-top: 4px;
+}
+
+.headline {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+}
+
+.paragraph {
+  font-size: 1.1rem;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+/* List Styles to prevent "Unknown Node" style issues */
+.list {
+  padding-left: 20px;
+  margin-bottom: 15px;
+}
+
+.listItem {
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.link {
+  text-decoration: underline;
+  color: #000;
+}
+
+.imageWrapper {
+  margin: 10px 0;
+  max-width: 300px;
+}
+
+.inlineImage {
+  width: 100%;
+  height: auto;
+}
+
+/* NewsPage.module.css */
+.row {
+  display: grid;
+  grid-template-columns: 1fr; /* Stack by default */
+  gap: 15px;
+}
+
+@media (min-width: 600px) {
+  .row {
+    grid-template-columns: 120px 1fr; /* Side-by-side on desktop */
+    gap: 30px;
+  }
+}

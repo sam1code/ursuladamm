@@ -4,6 +4,7 @@
   min-height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
   padding-bottom: 100px;
+  margin: 0px;
 }
 
 .navbar {
@@ -84,7 +85,7 @@
 }
 
 .drawerOpen {
-  max-height: 800px; /* Adjust based on content */
+  max-height: 800px; /*Adjust based on content */
   padding: 40px;
   border: 1px solid #eee;
 }
