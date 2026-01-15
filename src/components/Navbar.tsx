@@ -64,8 +64,13 @@ export default function Navbar({ currentLang, translationSlug }: NavbarProps) {
   return (
     <>
       <nav className={styles.navbar}>
-        <div className={styles.logo} onClick={() => handleNavigation('home')}>
-          Ursula Damm
+        <div>
+          <div className={styles.logo} onClick={() => handleNavigation('home')}>
+            Ursula
+          </div>
+          <div className={styles.logo} onClick={() => handleNavigation('home')}>
+            Damm
+          </div>
         </div>
 
         {/* Desktop Links */}

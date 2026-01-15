@@ -1,67 +1,135 @@
 .article {
-  padding: 80px 0;
-  background: #fff;
-}
-.contentWrapper {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 0 24px;
+  max-width: 1024px;
+  color: #000;
+  text-align: left;
+  padding: 60px 24px;
+  font-family: inherit;
 }
 
-/* Media styling to fix the "too big" issue */
-.mediaContainer {
-  width: 100%;
-  margin: 2.5rem 0;
+.header {
+  margin-bottom: 48px;
   display: flex;
-  justify-content: center;
-}
-.contentImage {
-  max-width: 100%;
-  max-height: 600px;
-  height: auto;
-  object-fit: contain;
-}
-.videoPlayer {
-  width: 100%;
-  max-height: 500px;
-  background: #000;
-  border-radius: 4px;
+  justify-content: space-between;
+  max-width: 1024px;
 }
 
-/* Text styling */
+.title {
+  font-size: clamp(2.25rem, 8vw, 3rem);
+  font-weight: 500;
+  line-height: 1.1;
+  margin: 0 0 10px 0;
+  letter-spacing: -0.01em;
+}
+
+.displayYear {
+  display: block;
+  font-size: clamp(2.25rem, 8vw, 2.5rem);
+  font-weight: 500;
+  color: #838383;
+}
+
+.richTextBody {
+  max-width: 800px;
+  width: 100%;
+}
+
 .paragraph {
-  font-size: 1.2rem;
-  line-height: 1.8;
+  font-size: 1.125rem;
+  line-height: 1.6;
   margin-bottom: 1.5rem;
   color: #333;
 }
-.h2 {
-  font-size: 2rem;
-  margin: 2rem 0 1rem;
-  font-weight: 700;
-}
-.list {
-  padding-left: 20px;
-  margin-bottom: 1.5rem;
-}
-.listItem {
-  margin-bottom: 0.5rem;
-  font-size: 1.1rem;
+
+/* TEXT DECORATIONS */
+.paragraph sub {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+  bottom: -0.25em;
 }
 
-/* Header/Meta styling */
-.header {
-  text-align: center;
-  margin-bottom: 50px;
+.paragraph sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+  top: -0.5em;
 }
-.title {
-  font-size: 3rem;
-  font-weight: 800;
-  margin-top: 10px;
+
+/* MEDIA & GRID (Constrained to 800px body) */
+.mediaContainer {
+  margin: 2.5rem 0;
+  width: 100%;
 }
-.meta {
-  color: #888;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+
+.full {
+  max-width: 100%;
+}
+.medium {
+  max-width: 75%;
+}
+.small {
+  max-width: 40%;
+}
+
+.imageOnly {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.videoWrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  height: 0;
+  background: #000;
+}
+
+.videoElement {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.imageGrid {
+  display: grid;
+  gap: 16px;
+  margin: 3rem 0;
+  width: 100%;
+}
+
+.gridImage {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.gridCaption {
+  font-size: 0.875rem;
+  color: #666;
+  margin-top: 8px;
+}
+
+.inlineCode {
+  font-family: monospace;
+  background: #f4f4f4;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  color: #ff9d00;
+}
+
+@media (max-width: 600px) {
+  .article {
+    padding: 40px 16px;
+  }
+  .title {
+    font-size: 2.25rem;
+  }
+  .imageGrid {
+    grid-template-columns: 1fr !important;
+  }
 }

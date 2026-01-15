@@ -1,4 +1,4 @@
-import { getPayload } from 'payload'
+import { CollectionSlug, getPayload } from 'payload'
 import configPromise from '@/payload.config'
 import PortfolioClient from './PortfolioClient'
 import ProjectDetail from './ProjectDetail'
@@ -27,7 +27,7 @@ export default async function Page({ params }: { params: Promise<{ slug?: string
   const isImpressum = slug.some((s) => s === 'impressum')
   const isHome = slug.length === 0 || (isGerman && slug.length === 1)
 
-  // Wrapper function to keep the "Normal" layout consistent across all views
+  // Wrapper function to keep the layout consistent
   const LayoutWrapper = ({ children, tSlug }: { children: React.ReactNode; tSlug?: string }) => (
     <div className={layoutStyles.mainWrapper}>
       <Navbar currentLang={currentLang} translationSlug={tSlug} />
@@ -39,7 +39,7 @@ export default async function Page({ params }: { params: Promise<{ slug?: string
   // --- SCENARIO: INFO ---
   if (isCategoryInfo) {
     const infoData = await payload.find({
-      collection: 'info',
+      collection: 'info' as CollectionSlug,
       where: { language: { equals: currentLang }, _status: { equals: 'published' } },
     })
     return (
@@ -54,7 +54,7 @@ export default async function Page({ params }: { params: Promise<{ slug?: string
   // --- SCENARIO: NEWS ---
   if (isCategoryNews) {
     const newsData = await payload.find({
-      collection: 'news',
+      collection: 'news' as CollectionSlug,
       where: { language: { equals: currentLang }, _status: { equals: 'published' } },
       sort: '-date',
     })
@@ -100,6 +100,7 @@ export default async function Page({ params }: { params: Promise<{ slug?: string
     const artworksData = await payload.find({
       collection: 'posts',
       where: { _status: { equals: 'published' }, language: { equals: currentLang } },
+      limit: 100,
     })
 
     const artworks = artworksData.docs.map((post: any) => ({
@@ -109,9 +110,22 @@ export default async function Page({ params }: { params: Promise<{ slug?: string
       categories:
         post.categories?.map((cat: any) => (currentLang === 'de' ? cat.name_de : cat.name_en)) ||
         [],
-      img: post.featuredImage?.url || '',
+      // CHANGED: Instead of a single 'img' string, send 'images' as an array
+      images: post.featuredImages?.map((img: any) => img.url) || [],
       displayYear: post.displayYear,
     }))
+
+    // --- DESCENDING SORT: LATEST FIRST ---
+    artworks.sort((a: any, b: any) => {
+      const extractYear = (val: any) => {
+        const match = val ? val.toString().match(/\d{4}/) : null
+        return match ? parseInt(match[0], 10) : 0
+      }
+      const startYearA = extractYear(a.displayYear)
+      const startYearB = extractYear(b.displayYear)
+      if (startYearB !== startYearA) return startYearB - startYearA
+      return (b.displayYear || '').localeCompare(a.displayYear || '')
+    })
 
     return (
       <LayoutWrapper>
@@ -132,25 +146,23 @@ export default async function Page({ params }: { params: Promise<{ slug?: string
     collection: 'posts',
     where: { slug: { equals: projectSlug }, language: { equals: currentLang } },
     limit: 1,
-    depth: 2,
+    depth: 2, // High depth is important to expand the media objects in the array
   })
 
   const post = postData.docs[0]
   if (!post) return notFound()
 
-  // 1. Safely extract the slug from the relationship
+  // Safely extract the slug from the relationship
   const alternateVersion = post?.alternateVersion
-  // We force the fallback if the result is null, undefined, or an empty string
   let otherVersionSlug: string = 'HOME_FALLBACK'
 
   if (alternateVersion && typeof alternateVersion === 'object') {
-    // Use '??' or '||' to ensure a null slug becomes 'HOME_FALLBACK'
-    otherVersionSlug = alternateVersion.slug || 'HOME_FALLBACK'
+    otherVersionSlug = (alternateVersion as any).slug || 'HOME_FALLBACK'
   }
 
-  // 2. Pass it to the Navbar
   return (
     <LayoutWrapper tSlug={otherVersionSlug}>
+      {/* post.featuredImages is now passed as an array to ProjectDetail */}
       <ProjectDetail post={post} currentLang={currentLang} />
     </LayoutWrapper>
   )

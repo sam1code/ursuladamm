@@ -71,8 +71,6 @@ export interface Config {
     media: Media;
     categories: Category;
     posts: Post;
-    news: News;
-    info: Info;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -84,8 +82,6 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
-    news: NewsSelect<false> | NewsSelect<true>;
-    info: InfoSelect<false> | InfoSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -94,10 +90,10 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'de') | ('en' | 'de')[];
+  fallbackLocale: null;
   globals: {};
   globalsSelect: {};
-  locale: 'en' | 'de';
+  locale: null;
   user: User & {
     collection: 'users';
   };
@@ -173,7 +169,8 @@ export interface Media {
  */
 export interface Category {
   id: number;
-  name: string;
+  name_en: string;
+  name_de: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -186,17 +183,11 @@ export interface Post {
   title: string;
   slug?: string | null;
   language: 'en' | 'de';
-  /**
-   * Link the German version if this is English (and vice versa)
-   */
   alternateVersion?: (number | null) | Post;
   publishedDate: string;
-  /**
-   * e.g., 2023-2025 or 2012
-   */
   displayYear?: string | null;
   categories?: (number | Category)[] | null;
-  featuredImage?: (number | null) | Media;
+  featuredImages?: (number | Media)[] | null;
   content: {
     root: {
       type: string;
@@ -214,67 +205,6 @@ export interface Post {
   };
   updatedAt: string;
   createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "news".
- */
-export interface News {
-  id: number;
-  headline: string;
-  date: string;
-  description: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  alternateVersion?: (number | null) | News;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "info".
- */
-export interface Info {
-  id: number;
-  title: string;
-  sections?:
-    | {
-        label: string;
-        details: {
-          root: {
-            type: string;
-            children: {
-              type: any;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        };
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -315,14 +245,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'posts';
         value: number | Post;
-      } | null)
-    | ({
-        relationTo: 'news';
-        value: number | News;
-      } | null)
-    | ({
-        relationTo: 'info';
-        value: number | Info;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -411,7 +333,8 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "categories_select".
  */
 export interface CategoriesSelect<T extends boolean = true> {
-  name?: T;
+  name_en?: T;
+  name_de?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -427,41 +350,10 @@ export interface PostsSelect<T extends boolean = true> {
   publishedDate?: T;
   displayYear?: T;
   categories?: T;
-  featuredImage?: T;
+  featuredImages?: T;
   content?: T;
   updatedAt?: T;
   createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "news_select".
- */
-export interface NewsSelect<T extends boolean = true> {
-  headline?: T;
-  date?: T;
-  description?: T;
-  alternateVersion?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "info_select".
- */
-export interface InfoSelect<T extends boolean = true> {
-  title?: T;
-  sections?:
-    | T
-    | {
-        label?: T;
-        details?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

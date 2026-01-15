@@ -197,7 +197,7 @@ export interface Post {
    */
   displayYear?: string | null;
   categories?: (number | Category)[] | null;
-  featuredImage?: (number | null) | Media;
+  featuredImages?: (number | Media)[] | null;
   content: {
     root: {
       type: string;
@@ -430,7 +430,7 @@ export interface PostsSelect<T extends boolean = true> {
   publishedDate?: T;
   displayYear?: T;
   categories?: T;
-  featuredImage?: T;
+  featuredImages?: T;
   content?: T;
   updatedAt?: T;
   createdAt?: T;

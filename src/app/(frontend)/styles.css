@@ -5,6 +5,9 @@ body {
   max-width: 100%;
   overflow-x: hidden;
   position: relative;
+  font-family: var(--font-ia), monospace;
+  margin: 0;
+  padding: 0;
 }
 
 /* Ensure all elements respect the border-box model */

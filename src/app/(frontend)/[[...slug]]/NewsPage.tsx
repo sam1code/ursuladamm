@@ -77,7 +77,9 @@ export default function NewsPage({
 
   return (
     <main className={styles.container}>
-      <h1 className={styles.pageTitle}>{currentLang === 'de' ? 'News' : 'News'}</h1>
+      <h1 className={styles.pageTitle}>
+        {currentLang === 'en' ? 'Recent Activities' : 'Neuigkeiten'}
+      </h1>
 
       <div className={styles.feed}>
         {articles.map((article) => (

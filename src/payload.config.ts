@@ -1,5 +1,10 @@
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import {
+  lexicalEditor,
+  BlocksFeature,
+  UploadFeature,
+  HTMLConverterFeature,
+} from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
@@ -10,10 +15,6 @@ const dirname = path.dirname(filename)
 export default buildConfig({
   secret: process.env.PAYLOAD_SECRET || 'YOUR_SAFE_LOCAL_SECRET_KEY',
 
-  // REMOVED: localization block.
-  // This removes the "globe" icons and locale tabs from the admin panel,
-  // letting you manage EN and DE as separate rows/documents.
-
   admin: {
     user: 'users',
     dateFormat: 'dd.MM.yyyy HH:mm',
@@ -23,7 +24,73 @@ export default buildConfig({
       url: process.env.DATABASE_URI || 'file:./payload.db',
     },
   }),
-  editor: lexicalEditor({}),
+
+  // UPDATED EDITOR CONFIG
+  editor: lexicalEditor({
+    features: ({ defaultFeatures }) => [
+      ...defaultFeatures,
+      // 1. Adds a "Size" dropdown to every single image upload
+      UploadFeature({
+        collections: {
+          media: {
+            fields: [
+              {
+                name: 'size',
+                type: 'select',
+                options: [
+                  { label: 'Small', value: 'small' },
+                  { label: 'Medium', value: 'medium' },
+                  { label: 'Full Width', value: 'full' },
+                ],
+                defaultValue: 'full',
+              },
+            ],
+          },
+        },
+      }),
+      // 2. Adds the ability to insert a Grid of multiple images
+      BlocksFeature({
+        blocks: [
+          {
+            slug: 'mediaGrid',
+            labels: {
+              singular: 'Media Grid',
+              plural: 'Media Grids',
+            },
+            fields: [
+              {
+                name: 'columns',
+                type: 'select',
+                defaultValue: '2',
+                options: [
+                  { label: '2 Columns', value: '2' },
+                  { label: '3 Columns', value: '3' },
+                  { label: '4 Columns', value: '4' },
+                ],
+              },
+              {
+                name: 'images',
+                type: 'array',
+                fields: [
+                  {
+                    name: 'image',
+                    type: 'upload',
+                    relationTo: 'media',
+                    required: true,
+                  },
+                  {
+                    name: 'caption',
+                    type: 'text',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      }),
+    ],
+  }),
+
   collections: [
     {
       slug: 'users',
@@ -38,29 +105,19 @@ export default buildConfig({
       slug: 'media',
       upload: true,
       access: {
-        read: () => true, // Allows anyone to view images
+        read: () => true,
       },
-      fields: [{ name: 'alt', type: 'text', required: true }], // Removed localized: true
+      fields: [{ name: 'alt', type: 'text', required: true }],
     },
     {
       slug: 'categories',
-      admin: { useAsTitle: 'name_en' }, // Uses the English name as the label in Admin
+      admin: { useAsTitle: 'name_en' },
       fields: [
         {
-          type: 'row', // Puts them side-by-side
+          type: 'row',
           fields: [
-            {
-              name: 'name_en',
-              label: 'Name (English)',
-              type: 'text',
-              required: true,
-            },
-            {
-              name: 'name_de',
-              label: 'Name (German)',
-              type: 'text',
-              required: true,
-            },
+            { name: 'name_en', label: 'Name (English)', type: 'text', required: true },
+            { name: 'name_de', label: 'Name (German)', type: 'text', required: true },
           ],
         },
       ],
@@ -74,13 +131,13 @@ export default buildConfig({
       },
       versions: { drafts: true },
       fields: [
-        { name: 'title', type: 'text', required: true }, // Removed localized: true
+        { name: 'title', type: 'text', required: true },
         { name: 'slug', type: 'text', unique: true, admin: { position: 'sidebar' } },
         {
           name: 'language',
           type: 'select',
           required: true,
-          defaultValue: 'en', // Defaults new posts to English
+          defaultValue: 'en',
           options: [
             { label: 'English', value: 'en' },
             { label: 'German', value: 'de' },
@@ -91,10 +148,7 @@ export default buildConfig({
           name: 'alternateVersion',
           type: 'relationship',
           relationTo: 'posts',
-          admin: {
-            position: 'sidebar',
-            description: 'Link the other language version here',
-          },
+          admin: { position: 'sidebar', description: 'Link the other language version here' },
         },
         { name: 'publishedDate', type: 'date', required: true, admin: { position: 'sidebar' } },
         {
@@ -109,8 +163,14 @@ export default buildConfig({
           hasMany: true,
           admin: { position: 'sidebar' },
         },
-        { name: 'featuredImage', type: 'upload', relationTo: 'media' },
-        { name: 'content', type: 'richText', required: true }, // Removed localized: true
+        {
+          name: 'featuredImages',
+          type: 'upload',
+          relationTo: 'media',
+          hasMany: true,
+          label: 'Featured Images',
+        },
+        { name: 'content', type: 'richText', required: true },
       ],
     },
     {

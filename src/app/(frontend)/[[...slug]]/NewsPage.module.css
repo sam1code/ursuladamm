@@ -1,7 +1,6 @@
 .container {
   max-width: 800px;
-  margin: 0 auto;
-  padding: 100px 20px;
+  margin: 20px;
 }
 
 .pageTitle {
@@ -17,7 +16,6 @@
 }
 
 .date {
-  font-family: monospace;
   font-size: 0.9rem;
   color: #777;
   padding-top: 4px;
