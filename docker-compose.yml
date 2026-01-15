@@ -1,6 +1,5 @@
 services:
   payload:
-    platform: linux/amd64
     build: .
     ports:
       - "3000:3000"
