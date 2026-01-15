@@ -1,13 +1,13 @@
 services:
   payload:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    restart: always
+    platform: linux/amd64
+    build: .
     ports:
       - "3000:3000"
     volumes:
-      - ./payload.db:/app/database/payload.db
-      - ./media:/app/media
-    env_file:
-      - .env
+      - ./database:/app/database
+      - payload_media:/app/media
+
+volumes:
+  payload_db:
+  payload_media:
