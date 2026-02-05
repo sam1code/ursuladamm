@@ -100,7 +100,6 @@
 
 /* THE ARTISTIC YEAR */
 .artYear {
-  font-family: serif; /* Artistic shift to serif */
   font-size: 30px;
   color: rgba(0, 0, 0, 0.15); /* Subtle, sophisticated appearance */
   letter-spacing: 2px;

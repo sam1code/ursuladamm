@@ -1,75 +1,86 @@
 .container {
-  max-width: 800px;
-  margin: 20px;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+  font-family: monospace;
 }
 
 .pageTitle {
-  font-size: 1.8rem;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: left; /* Ensure title is left-aligned */
+  text-transform: none; /* Remove capitalization */
+}
+
+.topDivider {
+  border: none;
+  border-top: 1px solid black;
   margin-bottom: 30px;
-  border-bottom: 2px solid #000;
-  padding-bottom: 5px;
 }
 
 .newsItem {
-  padding: 15px 0; /* Very compact */
-  border-bottom: 1px solid #eee;
+  margin-bottom: 40px;
 }
 
-.date {
-  font-size: 0.9rem;
-  color: #777;
-  padding-top: 4px;
+.row {
+  display: flex;
+  justify-content: space-between; /* Pushes date to the right end */
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.contentColumn {
+  flex: 1;
+  text-align: left; /* Explicitly align all content left */
 }
 
 .headline {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin: 0 0 8px 0;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+  text-transform: none; /* Change from uppercase to normal */
+  text-align: left;
+}
+
+.dateSide {
+  flex: 0 0 auto;
+  color: #999;
+  font-size: 1rem;
+  text-align: right; /* Keeps date at the right end */
+  padding-top: 5px;
+}
+
+/* --- Link Styling --- */
+.link {
+  color: #000;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-align: left;
 }
 
 .paragraph {
-  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
   line-height: 1.4;
-  margin-bottom: 10px;
+  text-align: left;
 }
 
-/* List Styles to prevent "Unknown Node" style issues */
 .list {
   padding-left: 20px;
-  margin-bottom: 15px;
+  margin: 0;
+  text-align: left; /* Ensure list markers are on the left */
 }
 
 .listItem {
-  font-size: 1.1rem;
-  margin-bottom: 4px;
-  line-height: 1.4;
+  margin-bottom: 5px;
+  font-size: 1rem;
+  text-align: left;
 }
 
-.link {
-  text-decoration: underline;
-  color: #000;
-}
-
-.imageWrapper {
-  margin: 10px 0;
-  max-width: 300px;
-}
-
-.inlineImage {
-  width: 100%;
-  height: auto;
-}
-
-/* NewsPage.module.css */
-.row {
-  display: grid;
-  grid-template-columns: 1fr; /* Stack by default */
-  gap: 15px;
-}
-
-@media (min-width: 600px) {
+@media (max-width: 768px) {
   .row {
-    grid-template-columns: 120px 1fr; /* Side-by-side on desktop */
-    gap: 30px;
+    flex-direction: column-reverse;
+  }
+  .dateSide {
+    text-align: left;
   }
 }

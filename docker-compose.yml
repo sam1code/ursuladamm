@@ -5,7 +5,7 @@ services:
       - "3000:3000"
     volumes:
       - ./database:/app/database
-      - payload_media:/app/media
+      - ./media:/app/media
 
 volumes:
   payload_db:
