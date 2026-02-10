@@ -2,11 +2,10 @@ services:
   payload:
     build: .
     ports:
-      - "3000:3000"
+      - "80:3000"
+    env_file:
+      - .env
     volumes:
       - ./database:/app/database
       - ./media:/app/media
-
-volumes:
-  payload_db:
-  payload_media:
+    restart: unless-stopped
