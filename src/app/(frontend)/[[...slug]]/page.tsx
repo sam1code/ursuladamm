@@ -8,6 +8,7 @@ import Navbar from '@/components/Navbar'
 import Footer from './Footer'
 import { notFound } from 'next/navigation'
 import layoutStyles from './MainLayout.module.css'
+import Link from 'next/link'
 
 export default async function Page({ params }: { params: Promise<{ slug?: string[] }> }) {
   const resolvedParams = await params
@@ -74,20 +75,7 @@ export default async function Page({ params }: { params: Promise<{ slug?: string
         <div className={layoutStyles.sheet}>
           <h1>{currentLang === 'de' ? 'Impressum' : 'Imprint'}</h1>
           <div style={{ lineHeight: '1.7', fontSize: '1.1rem' }}>
-            <p>
-              <strong>Ursula Damm</strong>
-            </p>
-            <p>
-              Studio Address Line 1<br />
-              12345 City, Germany
-            </p>
             <p>Email: studio@ursuladamm.de</p>
-            <hr style={{ margin: '30px 0', border: '0', borderTop: '1px solid #eee' }} />
-            <p>
-              {currentLang === 'de'
-                ? 'Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV...'
-                : 'Responsible for content according to local regulations...'}
-            </p>
           </div>
         </div>
       </LayoutWrapper>

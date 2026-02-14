@@ -2,6 +2,8 @@
 import React from 'react'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import styles from './ProjectDetail.module.css'
+import Link from 'next/link'
+import { VimeoEmbed } from '@/components/VimeoEmbed'
 
 export default function ProjectDetail({
   post,
@@ -11,8 +13,16 @@ export default function ProjectDetail({
   currentLang: 'en' | 'de'
 }) {
   const extractVimeoId = (url: string) => {
-    const match = url.match(/vimeo\.com\/(\d+)/)
-    return match ? match[1] : null
+    if (!url) return null
+
+    // Matches:
+    // - https://vimeo.com/229463751
+    // - https://www.vimeo.com/229463751
+    // - https://player.vimeo.com/video/229463751
+    // - https://vimeo.com/channels/staffpicks/229463751
+    // - https://vimeo.com/groups/name/videos/229463751
+    const match = url.match(/vimeo\.com\/(?:.*\/)?(?:video\/)?(\d+)(?:$|[?/])/)
+    return match?.[1] ?? null
   }
 
   const customConverters: any = {
@@ -91,8 +101,37 @@ export default function ProjectDetail({
       },
     },
 
+    link: ({ nodesToJSX, node }: any) => {
+      if (!node.fields?.url) return nodesToJSX({ nodes: node.children })
+
+      const vimeoId = extractVimeoId(node.children[0]?.text)
+      console.log(vimeoId, node.children[0]?.text, 'Vimeo ID extracted from link')
+
+      if (vimeoId) {
+        return <VimeoEmbed url={node.children[0]?.text} vimeoId={vimeoId} />
+      }
+
+      return (
+        <Link
+          href={node.fields?.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.link}
+        >
+          {nodesToJSX({ nodes: node.children })}
+        </Link>
+      )
+    },
+
     unknown: ({ nodesToJSX, node }: any) => {
+      const vimeoId = extractVimeoId(node.children[0]?.text)
+      console.log(vimeoId, node.children[0]?.text, 'from unknown converter')
+
+      if (vimeoId) {
+        return <VimeoEmbed url={node.children[0]?.text} vimeoId={vimeoId} />
+      }
       if (node.children) return nodesToJSX({ nodes: node.children })
+
       return <span>{node.text}</span>
     },
   }
